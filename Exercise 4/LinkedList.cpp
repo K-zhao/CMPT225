@@ -41,7 +41,10 @@ void LinkedList::remove(Node* nd, int val)
 			delete next;
 			current->next = nullptr;
 		}
-	} 
+	} else {
+		// We can assume at this point that nothing needs to be removed at this node, move on to next node.
+		remove(nd->next, val);
+	}
 
 }
 
