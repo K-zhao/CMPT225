@@ -114,15 +114,14 @@ int Deque::removeFront() {
     // If there's only one value in deque
     if (head == tail) {
         delete head;
-        head = nullptr;
-        delete tail;
-        tail = nullptr;
+        head = tail = nullptr;
     } else {
         // If deque has 2+ values 
         Node * temp = head;
         head = head->next;
         head->prev = nullptr;
         delete temp;
+        temp = nullptr;
     }
     
     return value;
@@ -136,15 +135,14 @@ int Deque::removeBack() {
     // If there's only one value in deque
     if (head == tail) {
         delete tail;
-        tail = nullptr;
-        delete head;
-        head = nullptr;
+        head = tail = nullptr;
     } else {
         // If deque has 2+ values 
         Node * temp = tail;
         tail = tail->prev;
         tail->next = nullptr;
         delete temp;
+        temp = nullptr;
     }
     
     return value;
@@ -215,6 +213,7 @@ void Deque::deallocateNodes() {
 	while (head != nullptr) {
 		head = head->next;
 		delete temp;
+        temp = nullptr;
 		temp = head;
 	}
 }

@@ -34,16 +34,16 @@ void test2() {
        dq1.insertBack(4);
        dq1.printForwards();
        cout << dq1.size();
-       Deque dq2(dq1);
-       dq2.printForwards();
-       dq2.printBackwards();
-       
-       dq2.insertFront(1900);
-       cout << dq2.size();
-       dq2.printForwards();
-       dq2 = dq2;
-       cout << dq2.size();
-       dq2.printForwards();
+       // Deque dq2(dq1);
+       // dq2.printForwards();
+       // dq2.printBackwards();
+       // 
+       // dq2.insertFront(1900);
+       // cout << dq2.size();
+       // dq2.printForwards();
+       // dq2 = dq2;
+       // cout << dq2.size();
+       // dq2.printForwards();
        // cout << "Remove Front "  <<  dq1.removeFront() << endl;
        // cout << dq1.empty() << endl;
        // cout << "Remove Back " << dq1.removeBack() << endl;
@@ -56,6 +56,6 @@ void test2() {
 int main()
 {      
        test2();
-       test();
+       // test();
        return 0;
 }
