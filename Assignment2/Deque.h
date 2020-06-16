@@ -5,22 +5,24 @@
 using std::cout;
 using std::endl;
 
+
+template <class T>
 class Node {
     
     public:
         // Attributes
-        int data;
+        T data;
         Node * prev;
         Node * next;
         
-        Node(int val) {
+        Node(T val) {
             data = val;
             prev = nullptr;
             next = nullptr;
         }
 
         // Constructor that considers whether node is to be inserted in the front or back of deque
-        Node(int val, Node * nd, bool front) {
+        Node(T val, Node * nd, bool front) {
             data = val;
             if (front) {
                 prev = nullptr;
@@ -32,7 +34,7 @@ class Node {
         }
 };
 
-
+template <class T>
 class Deque {
     
     public:
@@ -40,15 +42,15 @@ class Deque {
         Deque(const Deque & deq);
         ~Deque();
         Deque & operator=(const Deque & deq);
-        void insertFront(int num);
-        void insertBack(int num);
-        int removeFront();
-        int removeBack();
-        int peekFront() const;
-        int peekBack() const;
+        void insertFront(T num);
+        void insertBack(T num);
+        T removeFront();
+        T removeBack();
+        T peekFront() const;
+        T peekBack() const;
         bool empty() const;
         int size() const;
-        void initFirstNode(int num);
+        void initFirstNode(T num);
         void throwErrorIfEmpty() const;
         void copyDeque(const Deque & deq);
         void deallocateNodes();
@@ -56,27 +58,32 @@ class Deque {
         void printBackwards();
         
     private:
-        Node * head;
-        Node * tail;
+        Node<T> * head;
+        Node<T> * tail;
 };
 
 // Constructor - Makes an empty Deque
-Deque::Deque() {
+template <class T>
+Deque<T>::Deque() {
     head = tail = nullptr;
 }
 
 // Copy Constructor - deep copy of Deque
-Deque::Deque(const Deque & deq) {
+template <class T>
+Deque<T>::Deque(const Deque & deq) {
     copyDeque(deq);
 }
 
 // Destructor
-Deque::~Deque() {
+template <class T>
+Deque<T>::~Deque() {
     deallocateNodes();
 }
 
 // Overloaded assignment operator
-Deque & Deque::operator=(const Deque & deq) {
+template <class T>
+Deque<T> & Deque<T>::operator=(const Deque & deq) {
+    // Checks for self-assignment
     if (this != &deq) {
         deallocateNodes();
         copyDeque(deq);
@@ -85,39 +92,46 @@ Deque & Deque::operator=(const Deque & deq) {
 }
 
 // Inserts template parameter at front of Deque
-void Deque::insertFront(int num) {
+template <class T>
+void Deque<T>::insertFront(T num) {
+    // If deque is empty
     if (empty()) {
         initFirstNode(num);
     } else {
-        Node * newNode = new Node(num, head, true);
+        // If deque has 1+ nodes already
+        Node<T> * newNode = new Node<T>(num, head, true);
         head->prev = newNode;
         head = newNode;
     }
 }
 
 // Inserts template parameter at back of Deque
-void Deque::insertBack(int num) {
+template <class T>
+void Deque<T>::insertBack(T num) {
+    // If deque is empty
     if (empty()) {
         initFirstNode(num);
     } else {
-        Node * newNode = new Node(num, tail, false);
+        // If deque has 1+ nodes already
+        Node<T> * newNode = new Node<T>(num, tail, false);
         tail->next = newNode;
         tail = newNode;
     }
 }
 
 // Removes and returns value at front of Deque
-int Deque::removeFront() {
+template <class T>
+T Deque<T>::removeFront() {
 
     throwErrorIfEmpty();
-    int value = head->data;
+    T value = head->data;
     // If there's only one value in deque
     if (head == tail) {
         delete head;
         head = tail = nullptr;
     } else {
         // If deque has 2+ values 
-        Node * temp = head;
+        Node<T> * temp = head;
         head = head->next;
         head->prev = nullptr;
         delete temp;
@@ -128,17 +142,18 @@ int Deque::removeFront() {
 }
 
 // Removes and returns value at back of Deque
-int Deque::removeBack() {
+template <class T>
+T Deque<T>::removeBack() {
     
     throwErrorIfEmpty();
-    int value = tail->data;
+    T value = tail->data;
     // If there's only one value in deque
     if (head == tail) {
         delete tail;
         head = tail = nullptr;
     } else {
         // If deque has 2+ values 
-        Node * temp = tail;
+        Node<T> * temp = tail;
         tail = tail->prev;
         tail->next = nullptr;
         delete temp;
@@ -149,19 +164,23 @@ int Deque::removeBack() {
 }
 
 // Returns value at front of Deque
-int Deque::peekFront() const {
+template <class T>
+T Deque<T>::peekFront() const {
     throwErrorIfEmpty();
     return head->data;
 }
 
 // Returns value at back of Deque
-int Deque::peekBack() const {
+template <class T>
+T Deque<T>::peekBack() const {
     throwErrorIfEmpty();
     return tail->data;
 }
 
 // Returns boolean on whether Deque is empty or not
-bool Deque::empty() const {
+template <class T>
+bool Deque<T>::empty() const {
+    // If the head/tail is empty then we know the deque is empty
     if (head == nullptr || tail == nullptr) {
         return true;
     } else {
@@ -170,9 +189,10 @@ bool Deque::empty() const {
 }
 
 // Returns number of items stored in Deque
-int Deque::size() const {
+template <class T>
+int Deque<T>::size() const {
     int count = 0;
-    Node* temp = head;
+    Node<T> * temp = head;
     // Loops over deque and increases count with every node traversed
 	while (temp != nullptr){
         count++;
@@ -183,24 +203,27 @@ int Deque::size() const {
 }
 
 // Initializes first node and sets head and tail to it
-void Deque::initFirstNode(int num) {    
-    Node * newNode = new Node(num);
+template <class T>
+void Deque<T>::initFirstNode(T num) {    
+    Node<T> * newNode = new Node<T>(num);
     head = newNode;
     tail = newNode;
 }
 
 // If deque is empty, throw error
-void Deque::throwErrorIfEmpty() const {
+template <class T>
+void Deque<T>::throwErrorIfEmpty() const {
     if (empty()) {
         throw std::runtime_error("Deque empty");
     }
 }
 
 // Used to copy Deque into new Deque
-void Deque::copyDeque(const Deque & deq) {
+template <class T>
+void Deque<T>::copyDeque(const Deque & deq) {
     head = tail = nullptr;
-    // Deep Copy
-    Node * temp = deq.head;
+    // Deep Copy - traverse and copy nodes until there are no more nodes
+    Node<T> * temp = deq.head;
     while (temp != nullptr) {
         insertBack(temp->data);
         temp = temp->next;
@@ -208,8 +231,10 @@ void Deque::copyDeque(const Deque & deq) {
 }
 
 // Loops through all nodes to deallocate
-void Deque::deallocateNodes() {
-    Node * temp = head;
+template <class T>
+void Deque<T>::deallocateNodes() {
+    // Traverse and delete nodes until there are no more nodes
+    Node<T> * temp = head;
 	while (head != nullptr) {
 		head = head->next;
 		delete temp;
@@ -219,8 +244,9 @@ void Deque::deallocateNodes() {
 }
 
 // Debugging
-void Deque::printForwards() {
-    Node* temp = head;
+template <class T>
+void Deque<T>::printForwards() {
+    Node<T> * temp = head;
 	cout << "Front" << endl;
 	while (temp != nullptr){
 		cout << temp->data << " ";
@@ -230,8 +256,9 @@ void Deque::printForwards() {
 }
 
 // Debugging
-void Deque::printBackwards() {
-    Node* temp = tail;
+template <class T>
+void Deque<T>::printBackwards() {
+    Node<T> * temp = tail;
 	cout << "Backwards" << endl;
 	while (temp != nullptr){
 		cout << temp->data << " ";
