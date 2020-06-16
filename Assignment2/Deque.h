@@ -198,7 +198,6 @@ int Deque<T>::size() const {
         count++;
 		temp = temp->next;
 	}
-	cout << endl;
     return count;
 }
 
